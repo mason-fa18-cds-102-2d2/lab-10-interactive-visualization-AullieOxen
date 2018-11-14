@@ -1,7 +1,7 @@
 ---
 title: "Lab 10: Interactive visualization"
-author: "Fill in your full name"
-date: "Date of lab session"
+author: "Nafisa Sabah"
+date: "11-14-2018"
 documentclass: article
 geometry: margin=1in
 fontsize: 11pt
