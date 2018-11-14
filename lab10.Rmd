@@ -32,28 +32,123 @@ suppressPackageStartupMessages(library(leaflet))
 # Load dataset
 mtcars <- read.csv("Cars.csv")
 school <- read.csv("School_University_100.csv")
+
+# instal development version of highcharter -
+# devtools::install_github("jbkunst/highcharter")
+
 ```
 
 ---
 
 ## Exercise 1
 
+```{r}
+hchart(mtcars,
+       "scatter",
+       hcaes(x = hp,
+             y = mpg,
+       )
+)
+```
+
+```{r}
+hchart(mtcars,
+       "scatter",
+       hcaes(x = hp,
+             y = mpg,
+             group = cyl
+       )
+)
+```
+
+```{r}
+hchart(mtcars, "scatter", hcaes(x = hp, y = mpg, group = cyl)) %>%
+  hc_title(text = "Miles per gallon vs Gross horsepower") %>%
+  hc_xAxis(title = list(text = "Gross horsepower")) %>%
+  hc_yAxis(title = list(text = "Miles per gallon")) 
+```
+
+Q: Can you observe any trend in the plot? Also, is there any relation between Gross horsepower, Miles per gallon and Number of cylinders?
+
+Answer:
+
+According to the plot, there appears to be a negative correlation between gross horsepower and miles per gallon such that as the gross horsepower increases, the number of miles per gallon decreases. 
+
+In addition, based on the given `cyl` value for each point on the plot, it appears that cars with 8 cylinders (`cyl` = 8) tend to have greater gross horsepower than cars with 6 cylinders (`cyl` = 6) or 4 cylinders (`cyl` = 4). However, 8-cylinder cars showed the least miles per gallon values than 6-cylinder and 4-cylinder cars. Alternatively, cars with 4 cylinders showed the least gross horsepower yet greatest miles per gallon. Therefore, it can be assumed that cars with more cylinders have greater gross horsepower but less miles per gallon, whereas cars with less cylinders have less gross horsepower but greater miles per gallon.
 
 
 ## Exercise 2
 
+```{r}
+hchart(mtcars, type = "bar", hcaes(x = Name, y = hp, group = carb)) %>%
+  hc_title(text = "Gross horsepower and number of carburetors by car") %>%
+  hc_xAxis(title = list(text = "Car")) %>%
+  hc_yAxis(title = list(text = "Gross horsepower")) 
+```
+```{r}
+hchart(mtcars, type = "bar", hcaes(x = Name, y = hp, group = carb)) %>%
+  hc_title(text = "Gross horsepower and number of carburetors by car") %>%
+  hc_xAxis(title = list(text = "Car")) %>%
+  hc_yAxis(title = list(text = "Gross horsepower")) %>%
+  hc_add_theme(hc_theme_elementary())
+```
+
+Answer:
+
+The cars which have the highest gross horsepower based on the number of carburetors are:
+
+* 1 carburetor: Hornet 4 Drive
+* 2 carburetor: Hornet Sportabout, Pontiac Firebird
+* 3 carburetor: Merc 450SE, Merc 450SL, Merc 450SLC
+* 4 carburetor: Ford Pantera L
+* 6 carburetor: Ferrari Dino
+* 8 carburetor: Maserati Bora
 
 
 ## Exercise 3
 
+Map with coordinates of the Eiffel Tower:
 
+```{r}
+leaflet() %>%
+  addProviderTiles(providers$OpenStreetMap.HOT) %>%
+  setView(lng = 2.2946948, lat = 48.858093, zoom = 5)
+```
+
+Answer:
+
+By increasing `zoom`, the map reproduces into a leaflet that shows a more specific map containing streets and local marks at the location placed in `setView()`. Decreasing `zoom`, will bring us to a zoomed out version of the location.
 
 
 ## Exercise 4
 
+Map with regular markers:
 
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -100.243683, lat =  34.052235, zoom = 3) %>%
+  addMarkers(lat = school$lat, lng = school$lon)
+```
+
+Map with circular markers:
+
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -100.243683, lat =  34.052235, zoom = 3) %>%
+  addCircleMarkers(lat = school$lat, lng = school$lon)
+```
 
 ## Exercise 5
 
-
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -100.243683, lat =  34.052235, zoom = 3) %>%
+  addMarkers(lat = school$lat, lng = school$lon,
+             popup = paste("School name:", school$School_Name, "<br>",
+                           "School rank:", school$School_Rank, "<br>",
+                           "School URL:", school$School_Url)) 
+```
 
